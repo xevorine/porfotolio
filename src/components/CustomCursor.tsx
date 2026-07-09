@@ -86,16 +86,20 @@ export const CustomCursor: React.FC = () => {
   let borderStyle: "solid" | "dashed" = "solid";
 
   if (dragging) {
-    scale = 3.5;
+    // Pinch effect: shrinks to a solid fresh green dot that inverts text underneath
+    scale = 1.6;
+    backgroundColor = "var(--color-accent-fresh)";
     borderColor = "var(--color-accent-fresh)";
-    borderWidth = "1.5px";
-    borderStyle = "dashed";
+    borderWidth = "1px";
+    borderStyle = "solid";
   } else if (grabHovered) {
-    scale = 3.8;
+    // Hollow dashed gold ring: hints that element is draggable without blocking text
+    scale = 3.5;
     borderColor = "var(--color-accent-main)";
     borderWidth = "1.5px";
     borderStyle = "dashed";
   } else if (hovered) {
+    // Solid filled gold ring for normal links/buttons
     scale = 2.5;
     backgroundColor = "var(--color-accent-main)";
     borderColor = "var(--color-accent-main)";
@@ -115,12 +119,6 @@ export const CustomCursor: React.FC = () => {
       }}
       animate={{ scale }}
       transition={{ type: "spring", stiffness: 350, damping: 25, mass: 0.1 }}
-    >
-      {(grabHovered || dragging) && (
-        <span className="text-[5px] font-sans font-bold tracking-[0.1em] text-white select-none">
-          {dragging ? "HOLD" : "DRAG"}
-        </span>
-      )}
-    </motion.div>
+    />
   );
 };
