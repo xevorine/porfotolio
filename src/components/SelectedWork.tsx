@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, useMotionValue, useMotionTemplate } from 'framer-motion';
+import { motion, useMotionValue, useMotionTemplate, useTransform, useSpring } from 'framer-motion';
 import { projects } from '../data/projects';
 import { AnimatedSection } from './AnimatedSection';
 
@@ -10,10 +10,30 @@ export const SelectedWork: React.FC = () => {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  function handleMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
-    const { left, top } = currentTarget.getBoundingClientRect();
-    mouseX.set(clientX - left);
-    mouseY.set(clientY - top);
+  // 3D Tilt Values
+  const tiltX = useMotionValue(0);
+  const tiltY = useMotionValue(0);
+
+  const rotateX = useSpring(useTransform(tiltY, [-0.5, 0.5], [7, -7]), { stiffness: 150, damping: 20 });
+  const rotateY = useSpring(useTransform(tiltX, [-0.5, 0.5], [-7, 7]), { stiffness: 150, damping: 20 });
+
+  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseXPosition = e.clientX - rect.left;
+    const mouseYPosition = e.clientY - rect.top;
+
+    mouseX.set(mouseXPosition);
+    mouseY.set(mouseYPosition);
+
+    tiltX.set((mouseXPosition / width) - 0.5);
+    tiltY.set((mouseYPosition / height) - 0.5);
+  }
+
+  function handleMouseLeave() {
+    tiltX.set(0);
+    tiltY.set(0);
   }
 
   return (
@@ -35,9 +55,16 @@ export const SelectedWork: React.FC = () => {
 
         {/* Featured Project (01) */}
         <AnimatedSection className="mb-20">
-          <div 
+          <motion.div 
             onMouseMove={handleMouseMove}
-            className="group relative rounded-2xl border border-border-warm bg-soft-panel overflow-hidden transition-all duration-500 hover:border-accent-main/40 shadow-xl"
+            onMouseLeave={handleMouseLeave}
+            style={{
+              rotateX,
+              rotateY,
+              transformStyle: "preserve-3d",
+              perspective: 1000,
+            }}
+            className="group relative rounded-2xl border border-border-warm bg-soft-panel overflow-hidden transition-colors duration-300 hover:border-accent-main/40 shadow-xl"
           >
             {/* Mouse Spotlight Overlay */}
             <motion.div
@@ -137,7 +164,7 @@ export const SelectedWork: React.FC = () => {
               </div>
 
             </div>
-          </div>
+          </motion.div>
         </AnimatedSection>
 
         {/* Regular Projects List Rows (02-05) */}
