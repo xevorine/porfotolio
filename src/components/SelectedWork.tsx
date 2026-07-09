@@ -1,11 +1,20 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useMotionTemplate } from 'framer-motion';
 import { projects } from '../data/projects';
 import { AnimatedSection } from './AnimatedSection';
 
 export const SelectedWork: React.FC = () => {
   const featuredProject = projects[0];
   const listProjects = projects.slice(1);
+
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  function handleMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
+    const { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }
 
   return (
     <section id="work" className="py-24 px-4 md:px-8 bg-sec-bg relative">
@@ -26,7 +35,24 @@ export const SelectedWork: React.FC = () => {
 
         {/* Featured Project (01) */}
         <AnimatedSection className="mb-20">
-          <div className="group relative rounded-2xl border border-border-warm bg-soft-panel overflow-hidden transition-all duration-500 hover:border-accent-main/40 shadow-xl">
+          <div 
+            onMouseMove={handleMouseMove}
+            className="group relative rounded-2xl border border-border-warm bg-soft-panel overflow-hidden transition-all duration-500 hover:border-accent-main/40 shadow-xl"
+          >
+            {/* Mouse Spotlight Overlay */}
+            <motion.div
+              className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              style={{
+                background: useMotionTemplate`
+                  radial-gradient(
+                    380px circle at ${mouseX}px ${mouseY}px,
+                    rgba(214, 168, 95, 0.12),
+                    rgba(156, 175, 136, 0.04) 40%,
+                    transparent 80%
+                  )
+                `,
+              }}
+            />
             {/* Visual background details */}
             <div className="absolute top-0 right-0 w-80 h-80 bg-accent-fresh/5 rounded-full filter blur-3xl pointer-events-none" />
             

@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
+import { Magnetic } from './Magnetic';
 
 interface FloatingWordProps {
   text: string;
@@ -45,6 +46,29 @@ const FloatingWord: React.FC<FloatingWordProps> = ({
       {text}
     </motion.div>
   );
+};
+
+const titleContainerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08,
+      delayChildren: 0.15,
+    }
+  }
+};
+
+const titleWordVariants = {
+  hidden: { opacity: 0, y: 25 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.16, 1, 0.3, 1],
+    }
+  }
 };
 
 export const Hero: React.FC = () => {
@@ -104,19 +128,38 @@ export const Hero: React.FC = () => {
 
           {/* Headline */}
           <motion.h1
-            initial={{ opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="text-4xl md:text-5xl lg:text-6xl text-text-primary leading-[1.1] mb-6 font-display max-w-2xl"
+            variants={titleContainerVariants}
+            initial="hidden"
+            animate="visible"
+            className="text-4xl md:text-5xl lg:text-6xl text-text-primary leading-[1.1] mb-6 font-display max-w-2xl flex flex-wrap gap-x-[0.22em] gap-y-[0.05em]"
           >
-            Building practical systems with <span className="text-accent-main">web</span>, <span className="text-accent-soft">automation</span>, data, and <span className="text-accent-fresh">AI</span>.
+            {["Building", "practical", "systems", "with"].map((word, i) => (
+              <motion.span key={i} variants={titleWordVariants} className="inline-block">
+                {word}
+              </motion.span>
+            ))}
+            <motion.span variants={titleWordVariants} className="inline-block">
+              <span className="text-accent-main">web</span>,
+            </motion.span>
+            <motion.span variants={titleWordVariants} className="inline-block">
+              <span className="text-accent-soft">automation</span>,
+            </motion.span>
+            <motion.span variants={titleWordVariants} className="inline-block">
+              data,
+            </motion.span>
+            <motion.span variants={titleWordVariants} className="inline-block">
+              and
+            </motion.span>
+            <motion.span variants={titleWordVariants} className="inline-block text-accent-fresh">
+              AI.
+            </motion.span>
           </motion.h1>
 
           {/* Subtext */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="text-base md:text-lg text-text-secondary leading-relaxed max-w-xl mb-10 font-ui"
           >
             I’m an Informatics student who builds real-world projects — from WhatsApp moderation bots and cashier systems to machine learning experiments and database design.
@@ -126,23 +169,27 @@ export const Hero: React.FC = () => {
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.8, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
             className="flex flex-wrap items-center gap-4 font-ui"
           >
-            <a
-              href="#work"
-              className="px-6 py-3 rounded-full bg-accent-main text-main-bg font-medium text-sm transition-all duration-300 hover:bg-accent-soft hover:shadow-lg hover:shadow-accent-main/10 hover:-translate-y-0.5"
-            >
-              Explore Work
-            </a>
-            <a
-              href="https://github.com/username"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-6 py-3 rounded-full border border-border-warm bg-sec-bg/50 hover:bg-soft-panel hover:text-accent-main text-text-secondary text-sm transition-all duration-300 hover:-translate-y-0.5"
-            >
-              GitHub
-            </a>
+            <Magnetic>
+              <a
+                href="#work"
+                className="px-6 py-3 rounded-full bg-accent-main text-main-bg font-medium text-sm transition-all duration-300 hover:bg-accent-soft hover:shadow-lg hover:shadow-accent-main/10"
+              >
+                Explore Work
+              </a>
+            </Magnetic>
+            <Magnetic>
+              <a
+                href="https://github.com/username"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-3 rounded-full border border-border-warm bg-sec-bg/50 hover:bg-soft-panel hover:text-accent-main text-text-secondary text-sm transition-all duration-300"
+              >
+                GitHub
+              </a>
+            </Magnetic>
           </motion.div>
         </div>
 

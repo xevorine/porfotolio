@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useSpring } from 'framer-motion';
 
 const navItems = [
   { name: 'Work', href: '#work' },
@@ -11,6 +11,13 @@ const navItems = [
 export const Navbar: React.FC = () => {
   const [activeSection, setActiveSection] = useState('');
   const [scrolled, setScrolled] = useState(false);
+
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -46,7 +53,12 @@ export const Navbar: React.FC = () => {
         scrolled ? 'top-3' : 'top-5'
       }`}
     >
-      <nav className="flex items-center justify-between w-full max-w-4xl h-12 px-4 md:px-6 rounded-full border border-border-warm bg-sec-bg/75 backdrop-blur-md shadow-lg shadow-black/20">
+      <nav className="relative overflow-hidden flex items-center justify-between w-full max-w-4xl h-12 px-4 md:px-6 rounded-full border border-border-warm bg-sec-bg/75 backdrop-blur-md shadow-lg shadow-black/20">
+        {/* Scroll Progress Line */}
+        <motion.div 
+          className="absolute top-0 left-0 right-0 h-[2px] bg-accent-main origin-left"
+          style={{ scaleX }}
+        />
         {/* Left: Name */}
         <a 
           href="#top" 
