@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Lenis from 'lenis';
+import { AnimatePresence } from 'framer-motion';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { SelectedWork } from './components/SelectedWork';
@@ -10,9 +11,14 @@ import { Footer } from './components/Footer';
 import { CustomCursor } from './components/CustomCursor';
 import { AccentSwitcher } from './components/AccentSwitcher';
 import { Marquee } from './components/Marquee';
+import { Preloader } from './components/Preloader';
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
+    if (isLoading) return;
+
     // Initialize Lenis smooth scroll
     const lenis = new Lenis({
       duration: 1.2,
@@ -29,10 +35,17 @@ function App() {
     return () => {
       lenis.destroy();
     };
-  }, []);
+  }, [isLoading]);
 
   return (
     <div className="relative min-h-screen bg-main-bg text-text-primary selection:bg-accent-main selection:text-main-bg">
+      {/* Preloader Overlay */}
+      <AnimatePresence mode="wait">
+        {isLoading && (
+          <Preloader onComplete={() => setIsLoading(false)} />
+        )}
+      </AnimatePresence>
+
       {/* Grain Texture Overlay */}
       <div className="grain-overlay" />
       
