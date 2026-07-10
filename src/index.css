@@ -148,3 +148,47 @@ h1, h2, h3, h4, .font-display {
 .animate-float-3 {
   animation: float-3 5.8s ease-in-out infinite;
 }
+
+/* Magnetic button — CSS handles the spring-like easing, no JS per frame */
+.magnetic-btn {
+  transition: transform 0.38s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Scroll line indicator */
+@keyframes scroll-line {
+  0%   { transform: scaleY(0); transform-origin: top; opacity: 0; }
+  30%  { transform: scaleY(1); transform-origin: top; opacity: 1; }
+  70%  { transform: scaleY(1); transform-origin: bottom; opacity: 1; }
+  100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
+}
+
+.animate-scroll-line {
+  animation: scroll-line 2s ease-in-out infinite;
+}
+
+/* Card hover glow — CSS only, GPU compositor */
+.card-hover-glow {
+  transition: box-shadow 0.4s ease, border-color 0.4s ease, transform 0.3s ease;
+}
+
+.card-hover-glow:hover {
+  box-shadow: 0 0 0 1px rgba(214,168,95,0.15), 0 8px 40px -8px rgba(214,168,95,0.12);
+  transform: translateY(-2px);
+}
+
+/* Shimmer on tool tags */
+@keyframes shimmer {
+  from { background-position: -200% center; }
+  to   { background-position: 200% center; }
+}
+
+.tag-shimmer:hover {
+  background-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(214,168,95,0.08) 50%,
+    transparent 100%
+  );
+  background-size: 200% auto;
+  animation: shimmer 0.8s ease;
+}

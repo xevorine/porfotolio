@@ -30,7 +30,7 @@ export const SelectedWork: React.FC = () => {
         <AnimatedSection className="mb-20">
           <div
             onClick={() => setSelectedProject(featuredProject)}
-            className="group relative rounded-2xl border border-border-warm bg-soft-panel overflow-hidden transition-all duration-300 hover:border-accent-main/40 hover:shadow-xl hover:shadow-accent-main/5 shadow-xl cursor-pointer"
+            className="card-hover-glow group relative rounded-2xl border border-border-warm bg-soft-panel overflow-hidden shadow-xl cursor-pointer"
           >
             {/* Visual background details */}
             <div className="absolute top-0 right-0 w-80 h-80 bg-accent-fresh/5 rounded-full filter blur-3xl pointer-events-none" />

@@ -39,7 +39,7 @@ export const Tools: React.FC = () => {
                 {group.items.map((item) => (
                   <span
                     key={item}
-                    className="px-3 py-1.5 text-xs md:text-sm font-ui rounded-lg border border-border-warm bg-elevated-panel/40 text-text-secondary hover:text-accent-main hover:border-accent-main/30 hover:-translate-y-0.5 hover:scale-[1.03] cursor-default select-none shadow-sm shadow-black/5 transition-all duration-200"
+                    className="tag-shimmer px-3 py-1.5 text-xs md:text-sm font-ui rounded-lg border border-border-warm bg-elevated-panel/40 text-text-secondary hover:text-accent-main hover:border-accent-main/30 hover:-translate-y-0.5 cursor-default select-none shadow-sm shadow-black/5 transition-all duration-200"
                   >
                     {item}
                   </span>

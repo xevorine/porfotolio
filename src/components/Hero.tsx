@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-
+import { Magnetic } from './Magnetic';
 const WORDS = [
   { text: 'WhatsApp Bot', x: '12%', y: '15%', colorClass: 'border-accent-fresh/30 text-accent-fresh bg-elevated-panel' },
   { text: 'Web Chatbot', x: '48%', y: '22%', colorClass: 'border-border-warm bg-soft-panel text-text-secondary' },
@@ -140,20 +140,36 @@ export const Hero: React.FC = () => {
             }}
             className="flex flex-wrap items-center gap-4 font-ui"
           >
-            <a
-              href="#work"
-              className="px-6 py-3 rounded-full bg-accent-main text-main-bg font-medium text-sm transition-all duration-300 hover:bg-accent-soft hover:shadow-lg hover:shadow-accent-main/10 hover:scale-[1.03] active:scale-[0.97]"
-            >
-              Explore Work
-            </a>
-            <a
-              href="https://github.com/xevorine"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-6 py-3 rounded-full border border-border-warm bg-sec-bg/50 hover:bg-soft-panel hover:text-accent-main text-text-secondary text-sm transition-all duration-300 hover:scale-[1.03] active:scale-[0.97]"
-            >
-              GitHub
-            </a>
+            <Magnetic>
+              <a
+                href="#work"
+                className="px-6 py-3 rounded-full bg-accent-main text-main-bg font-medium text-sm transition-all duration-300 hover:bg-accent-soft hover:shadow-lg hover:shadow-accent-main/10"
+              >
+                Explore Work
+              </a>
+            </Magnetic>
+            <Magnetic>
+              <a
+                href="https://github.com/xevorine"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-3 rounded-full border border-border-warm bg-sec-bg/50 hover:bg-soft-panel hover:text-accent-main text-text-secondary text-sm transition-all duration-300"
+              >
+                GitHub
+              </a>
+            </Magnetic>
+          </div>
+
+          {/* Scroll Down Indicator */}
+          <div
+            style={{
+              opacity: visible ? 1 : 0,
+              transition: 'opacity 0.8s ease 1.2s',
+            }}
+            className="mt-10 flex flex-col items-start gap-1.5"
+          >
+            <span className="text-[10px] uppercase tracking-widest text-text-muted font-ui">Scroll</span>
+            <div className="w-[1px] h-8 bg-gradient-to-b from-accent-main/60 to-transparent animate-scroll-line" />
           </div>
         </div>
 

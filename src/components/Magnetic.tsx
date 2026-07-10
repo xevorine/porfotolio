@@ -1,62 +1,52 @@
-import React, { useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
 
 interface MagneticProps {
   children: React.ReactElement;
-  range?: number; // How far the effect reaches
-  strength?: number; // How strong the pull is (0 to 1)
+  range?: number;
+  strength?: number;
 }
 
-export const Magnetic: React.FC<MagneticProps> = ({ 
+/**
+ * Lightweight magnetic button effect.
+ * Uses direct DOM style manipulation instead of React state + Framer Motion spring
+ * → Zero React re-renders, zero Framer Motion overhead
+ * → CSS transition handles the easing (GPU compositor thread)
+ */
+export const Magnetic: React.FC<MagneticProps> = ({
   children,
   range = 60,
-  strength = 0.35
+  strength = 0.32
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!ref.current) return;
-    const { clientX, clientY } = e;
     const { left, top, width, height } = ref.current.getBoundingClientRect();
-    
-    // Calculate distance from center of element to cursor
     const centerX = left + width / 2;
     const centerY = top + height / 2;
-    const distanceX = clientX - centerX;
-    const distanceY = clientY - centerY;
-    
-    // Calculate Euclidean distance
-    const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+    const distX = e.clientX - centerX;
+    const distY = e.clientY - centerY;
+    const distance = Math.sqrt(distX * distX + distY * distY);
 
     if (distance < range) {
-      // Pull towards cursor with dampening strength
-      setPosition({ 
-        x: distanceX * strength, 
-        y: distanceY * strength 
-      });
+      ref.current.style.transform = `translate(${distX * strength}px, ${distY * strength}px)`;
     } else {
-      // Out of range, return to center
-      setPosition({ x: 0, y: 0 });
+      ref.current.style.transform = 'translate(0px, 0px)';
     }
   };
 
   const handleMouseLeave = () => {
-    setPosition({ x: 0, y: 0 });
+    if (ref.current) ref.current.style.transform = 'translate(0px, 0px)';
   };
 
-  const { x, y } = position;
-
   return (
-    <motion.div
+    <div
       ref={ref}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      animate={{ x, y }}
-      transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
-      className="inline-block"
+      className="inline-block magnetic-btn"
     >
       {children}
-    </motion.div>
+    </div>
   );
 };

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
@@ -10,6 +10,7 @@ import { Footer } from './components/Footer';
 import { AccentSwitcher } from './components/AccentSwitcher';
 import { Marquee } from './components/Marquee';
 import { Preloader } from './components/Preloader';
+import Lenis from 'lenis';
 
 function App() {
   const [isLoading, setIsLoading] = useState(() => {
@@ -22,6 +23,29 @@ function App() {
       navigator.webdriver;
     return !isLighthouse;
   });
+
+  useEffect(() => {
+    // Only init Lenis on non-touch/desktop devices
+    // Mobile uses native scroll which is hardware-accelerated
+    const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    if (isTouch) return;
+
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    });
+
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+    return () => {
+      lenis.destroy();
+    };
+  }, []);
 
   return (
     <div className="relative min-h-screen bg-main-bg text-text-primary selection:bg-accent-main selection:text-main-bg">

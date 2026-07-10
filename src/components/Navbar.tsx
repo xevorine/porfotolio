@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 const navItems = [
   { name: 'Work', href: '#work' },
@@ -11,6 +11,7 @@ export const Navbar: React.FC = () => {
   const [activeSection, setActiveSection] = useState('');
   const [scrolled, setScrolled] = useState(false);
   const [visible, setVisible] = useState(false);
+  const progressRef = useRef<HTMLDivElement>(null);
 
   // Entry animation
   useEffect(() => {
@@ -20,8 +21,21 @@ export const Navbar: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-      const scrollPosition = window.scrollY + 150;
+      const scrollY = window.scrollY;
+
+      // Update scroll state
+      setScrolled(scrollY > 20);
+
+      // Update scroll progress bar via direct DOM — no React state re-render
+      if (progressRef.current) {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        if (max > 0) {
+          progressRef.current.style.transform = `scaleX(${scrollY / max})`;
+        }
+      }
+
+      // Active section detection
+      const scrollPosition = scrollY + 150;
       for (const item of navItems) {
         const el = document.querySelector(item.href);
         if (el) {
@@ -52,6 +66,13 @@ export const Navbar: React.FC = () => {
       }`}
     >
       <nav className="relative overflow-hidden flex items-center justify-between w-full max-w-4xl h-12 px-4 md:px-6 rounded-full border border-border-warm bg-sec-bg/75 backdrop-blur-md shadow-lg shadow-black/20">
+        {/* Scroll Progress Bar — updated via direct DOM ref, not React state */}
+        <div
+          ref={progressRef}
+          className="absolute top-0 left-0 right-0 h-[2px] bg-accent-main origin-left"
+          style={{ transform: 'scaleX(0)', willChange: 'transform' }}
+        />
+
         {/* Left: Name */}
         <a
           href="#top"
@@ -83,7 +104,6 @@ export const Navbar: React.FC = () => {
 
           <div className="h-4 w-[1px] bg-border-warm" />
 
-          {/* GitHub link */}
           <a
             href="https://github.com/xevorine"
             target="_blank"
@@ -91,12 +111,7 @@ export const Navbar: React.FC = () => {
             className="flex items-center gap-0.5 text-xs md:text-sm text-text-muted hover:text-accent-main transition-colors duration-200"
           >
             GitHub
-            <svg
-              className="w-3 h-3 opacity-60"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
+            <svg className="w-3 h-3 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
           </a>
