@@ -4,20 +4,20 @@
   --font-serif: "Fraunces", Georgia, serif;
   --font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
   
-  --color-main-bg: #0F1110;
-  --color-sec-bg: #151817;
-  --color-soft-panel: #1B1F1D;
-  --color-elevated-panel: #222724;
-  --color-border-warm: #2F3632;
+  --color-main-bg: #0A0D14;
+  --color-sec-bg: #111622;
+  --color-soft-panel: #171E2E;
+  --color-elevated-panel: #1F273B;
+  --color-border-warm: #263148;
   
-  --color-text-primary: #F4F2EC;
-  --color-text-secondary: #A8AEA8;
-  --color-text-muted: #7F8780;
+  --color-text-primary: #F1F5F9;
+  --color-text-secondary: #94A3B8;
+  --color-text-muted: #64748B;
   
-  --color-accent-main: #D6A85F;
-  --color-accent-soft: #E7D8B7;
-  --color-accent-fresh: #9CAF88;
-  --color-accent-cool: #8FB8B2;
+  --color-accent-main: #8AB4F8;
+  --color-accent-soft: #C2D7FF;
+  --color-accent-fresh: #86EFAC;
+  --color-accent-cool: #A5B4FC;
 }
 
 /* Custom Base Rules */

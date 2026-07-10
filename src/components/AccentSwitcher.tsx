@@ -12,46 +12,46 @@ interface ThemePalette {
 
 const themes: ThemePalette[] = [
   {
-    name: 'Gold',
-    color: '#D6A85F',
-    main: '#D6A85F',
-    soft: '#E7D8B7',
-    fresh: '#9CAF88',
-    cool: '#8FB8B2'
+    name: 'Slate Blue',
+    color: '#8AB4F8',
+    main: '#8AB4F8',
+    soft: '#C2D7FF',
+    fresh: '#86EFAC',
+    cool: '#A5B4FC'
   },
   {
-    name: 'Forest',
-    color: '#9CAF88',
-    main: '#9CAF88',
-    soft: '#C5D2B1',
-    fresh: '#D6A85F',
-    cool: '#7DA2A9'
+    name: 'Teal Cool',
+    color: '#2DD4BF',
+    main: '#2DD4BF',
+    soft: '#99F6E4',
+    fresh: '#8AB4F8',
+    cool: '#F472B6'
   },
   {
-    name: 'Clay',
-    color: '#C87A53',
-    main: '#C87A53',
-    soft: '#E5C3B2',
-    fresh: '#9CAF88',
-    cool: '#8FB8B2'
+    name: 'Periwinkle',
+    color: '#A5B4FC',
+    main: '#A5B4FC',
+    soft: '#E0E7FF',
+    fresh: '#38BDF8',
+    cool: '#F472B6'
   },
   {
-    name: 'Nordic',
-    color: '#8FB8B2',
-    main: '#8FB8B2',
-    soft: '#C5DFDC',
-    fresh: '#D6A85F',
-    cool: '#8BA39F'
+    name: 'Rose Water',
+    color: '#F472B6',
+    main: '#F472B6',
+    soft: '#FCE7F3',
+    fresh: '#2DD4BF',
+    cool: '#8AB4F8'
   }
 ];
 
 export const AccentSwitcher: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeTheme, setActiveTheme] = useState('Gold');
+  const [activeTheme, setActiveTheme] = useState('Slate Blue');
 
   // Load theme on mount
   useEffect(() => {
-    const savedThemeName = localStorage.getItem('portfolio-accent-theme') || 'Gold';
+    const savedThemeName = localStorage.getItem('portfolio-accent-theme') || 'Slate Blue';
     const theme = themes.find(t => t.name === savedThemeName) || themes[0];
     applyTheme(theme);
   }, []);
